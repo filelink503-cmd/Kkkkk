@@ -20,10 +20,14 @@ async def render_page(id, secure_hash, src=None, chat_id=None):
     file = await TechVJBot.get_messages(chat_id, int(id))
     file_data = await get_file_ids(TechVJBot, chat_id, int(id))
     
+      # ---------------------------------------------------------------
+    # 🔥 HASH CHECK REMOVED (Taaki bina hash ke bhi link chale)
+    # ---------------------------------------------------------------
     if file_data.unique_id[:6] != secure_hash:
         logging.debug(f"link hash: {secure_hash} - {file_data.unique_id[:6]}")
         logging.debug(f"Invalid hash for message with - ID {id}")
-        raise InvalidHash
+        # raise InvalidHash  <-- ISKO COMMENT KAR DIYA HAI ✅
+    # ---------------------------------------------------------------
 
     # 🔥 URL Generation me ab Chat ID bhi jod diya hai
     # Format: URL/CHAT_ID/MSG_ID/FILENAME
