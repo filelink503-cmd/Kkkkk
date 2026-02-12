@@ -30,33 +30,50 @@ class ByteStreamer:
         """
         self.clean_timer = 30 * 60
         self.client: Client = client
-        self.cached_file_ids: Dict[int, FileId] = {}
+        # 🔥 Change: Key ab string hogi (ChatID_MsgID) taaki mix na ho
+        self.cached_file_ids: Dict[str, FileId] = {}
         asyncio.create_task(self.clean_cache())
 
-    async def get_file_properties(self, id: int) -> FileId:
+    # 🔥 Updated: Ab ye chat_id bhi accept karega
+    async def get_file_properties(self, id: int, chat_id: int = None) -> FileId:
         """
         Returns the properties of a media of a specific message in a FIleId class.
         if the properties are cached, then it'll return the cached results.
         or it'll generate the properties from the Message ID and cache them.
         """
-        if id not in self.cached_file_ids:
-            await self.generate_file_properties(id)
-            logging.debug(f"Cached file properties for message with ID {id}")
-        return self.cached_file_ids[id]
+        # Agar chat_id nahi mila, to default LOG_CHANNEL use karo (Old Link Support)
+        if chat_id is None:
+            chat_id = int(LOG_CHANNEL)
+
+        # Unique Key banao taaki alag channels ke same msg_id mix na ho
+        unique_key = f"{chat_id}_{id}"
+
+        if unique_key not in self.cached_file_ids:
+            await self.generate_file_properties(id, chat_id)
+            logging.debug(f"Cached file properties for message with ID {id} in chat {chat_id}")
+        
+        return self.cached_file_ids[unique_key]
     
-    async def generate_file_properties(self, id: int) -> FileId:
+    # 🔥 Updated: chat_id pass kiya gaya hai
+    async def generate_file_properties(self, id: int, chat_id: int) -> FileId:
         """
         Generates the properties of a media file on a specific message.
         returns ths properties in a FIleId class.
         """
-        file_id = await get_file_ids(self.client, LOG_CHANNEL, id)
+        # [span_0](start_span)Yahan LOG_CHANNEL ki jagah dynamic chat_id use ho raha hai[span_0](end_span)
+        file_id = await get_file_ids(self.client, chat_id, id)
         logging.debug(f"Generated file ID and Unique ID for message with ID {id}")
+        
         if not file_id:
             logging.debug(f"Message with ID {id} not found")
             raise FIleNotFound
-        self.cached_file_ids[id] = file_id
+            
+        unique_key = f"{chat_id}_{id}"
+        self.cached_file_ids[unique_key] = file_id
         logging.debug(f"Cached media message with ID {id}")
-        return self.cached_file_ids[id]
+        return self.cached_file_ids[unique_key]
+
+    # --- BAAKI SAB KUCH SAME HAI (NO CHANGES BELOW) ---
 
     async def generate_media_session(self, client: Client, file_id: FileId) -> Session:
         """
