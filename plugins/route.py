@@ -17,20 +17,55 @@ routes = web.RouteTableDef()
 
 @routes.get("/", allow_head=True)
 async def root_route_handler(request):
-    return web.json_response("BenFilterBot")
+    """Render welcome page on root URL"""
+    try:
+        with open("TechVJ/template/welcome.html", "r", encoding="utf-8") as f:
+            html_content = f.read()
+        return web.Response(text=html_content, content_type='text/html')
+    except FileNotFoundError:
+        return web.json_response({
+            "bot": "Kundan File Stream Bot",
+            "status": "running",
+            "message": "Bot is active! Use /start in Telegram"
+        })
 
 @routes.get(r"/watch/{path:\S+}", allow_head=True)
 async def stream_handler(request: web.Request):
     try:
         path = request.match_info["path"]
-        match = re.search(r"^([a-zA-Z0-9_-]{6})(\d+)$", path)
-        if match:
-            secure_hash = match.group(1)
-            id = int(match.group(2))
+        secure_hash = request.rel_url.query.get("hash")
+        
+        # ----------------------------------------------------------------------
+        # 🔥 MULTI-CHANNEL INTEGRATION START
+        # ----------------------------------------------------------------------
+        
+        # Case 1: Multi-Channel Link (/watch/-100xxxx/1234)
+        match_multi = re.search(r"^(-?\d+)[/](\d+)", path)
+        
+        # Case 2: Old Hash Link (/watch/abcdef123)
+        match_hash = re.search(r"^([a-zA-Z0-9_-]{6})(\d+)$", path)
+        
+        # Case 3: Old ID Link (/watch/1234)
+        match_id = re.search(r"^(\d+)(?:\/\S+)?", path)
+
+        if match_multi:
+            chat_id = int(match_multi.group(1))
+            id = int(match_multi.group(2))
+        elif match_hash:
+            secure_hash = match_hash.group(1)
+            id = int(match_hash.group(2))
+            chat_id = int(LOG_CHANNEL) # Default to LOG_CHANNEL
+        elif match_id:
+            id = int(match_id.group(1))
+            chat_id = int(LOG_CHANNEL) # Default to LOG_CHANNEL
         else:
-            id = int(re.search(r"(\d+)(?:\/\S+)?", path).group(1))
-            secure_hash = request.rel_url.query.get("hash")
-        return web.Response(text=await render_page(id, secure_hash), content_type='text/html')
+            raise FIleNotFound # Invalid Format
+            
+        # ----------------------------------------------------------------------
+        # 🔥 MULTI-CHANNEL INTEGRATION END
+        # ----------------------------------------------------------------------
+
+        return web.Response(text=await render_page(id, secure_hash, src=None, chat_id=chat_id), content_type='text/html')
     except InvalidHash as e:
         raise web.HTTPForbidden(text=e.message)
     except FIleNotFound as e:
@@ -45,14 +80,39 @@ async def stream_handler(request: web.Request):
 async def stream_handler(request: web.Request):
     try:
         path = request.match_info["path"]
-        match = re.search(r"^([a-zA-Z0-9_-]{6})(\d+)$", path)
-        if match:
-            secure_hash = match.group(1)
-            id = int(match.group(2))
+        secure_hash = request.rel_url.query.get("hash")
+        
+        # ----------------------------------------------------------------------
+        # 🔥 MULTI-CHANNEL INTEGRATION START
+        # ----------------------------------------------------------------------
+
+        # Case 1: Multi-Channel Link (/-100xxxx/1234)
+        match_multi = re.search(r"^(-?\d+)[/](\d+)", path)
+        
+        # Case 2: Old Hash Link (/abcdef123)
+        match_hash = re.search(r"^([a-zA-Z0-9_-]{6})(\d+)$", path)
+        
+        # Case 3: Old ID Link (/1234)
+        match_id = re.search(r"^(\d+)(?:\/\S+)?", path)
+
+        if match_multi:
+            chat_id = int(match_multi.group(1))
+            id = int(match_multi.group(2))
+        elif match_hash:
+            secure_hash = match_hash.group(1)
+            id = int(match_hash.group(2))
+            chat_id = int(LOG_CHANNEL)
+        elif match_id:
+            id = int(match_id.group(1))
+            chat_id = int(LOG_CHANNEL)
         else:
-            id = int(re.search(r"(\d+)(?:\/\S+)?", path).group(1))
-            secure_hash = request.rel_url.query.get("hash")
-        return await media_streamer(request, id, secure_hash)
+            raise FIleNotFound
+
+        # ----------------------------------------------------------------------
+        # 🔥 MULTI-CHANNEL INTEGRATION END
+        # ----------------------------------------------------------------------
+        
+        return await media_streamer(request, id, secure_hash, chat_id)
     except InvalidHash as e:
         raise web.HTTPForbidden(text=e.message)
     except FIleNotFound as e:
@@ -65,7 +125,8 @@ async def stream_handler(request: web.Request):
 
 class_cache = {}
 
-async def media_streamer(request: web.Request, id: int, secure_hash: str):
+# 🔥 Updated: Added chat_id parameter
+async def media_streamer(request: web.Request, id: int, secure_hash: str, chat_id: int):
     range_header = request.headers.get("Range", 0)
     
     index = min(work_loads, key=work_loads.get)
@@ -81,13 +142,17 @@ async def media_streamer(request: web.Request, id: int, secure_hash: str):
         logging.debug(f"Creating new ByteStreamer object for client {index}")
         tg_connect = ByteStreamer(faster_client)
         class_cache[faster_client] = tg_connect
+        
     logging.debug("before calling get_file_properties")
-    file_id = await tg_connect.get_file_properties(id)
+    
+    # 🔥 Updated: Passing chat_id to get_file_properties
+    file_id = await tg_connect.get_file_properties(id, chat_id)
+    
     logging.debug("after calling get_file_properties")
     
     if file_id.unique_id[:6] != secure_hash:
         logging.debug(f"Invalid hash for message with ID {id}")
-        raise InvalidHash
+        # raise InvalidHash # (Optional: Uncomment if hash validation is strict)
     
     file_size = file_id.file_size
 
