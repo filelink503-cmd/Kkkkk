@@ -1,6 +1,3 @@
-# Don't Remove Credit @VJ_Botz
-# Subscribe YouTube Channel For Amazing Bot @Tech_VJ
-# Ask Doubt on telegram @KingVJ01
 
 import re, math, logging, secrets, mimetypes, time
 from info import *
@@ -145,14 +142,12 @@ async def media_streamer(request: web.Request, id: int, secure_hash: str, chat_i
         
     logging.debug("before calling get_file_properties")
     
-    # 🔥 Updated: Passing chat_id to get_file_properties
     file_id = await tg_connect.get_file_properties(id, chat_id)
     
     logging.debug("after calling get_file_properties")
     
     if file_id.unique_id[:6] != secure_hash:
         logging.debug(f"Invalid hash for message with ID {id}")
-        # raise InvalidHash # (Optional: Uncomment if hash validation is strict)
     
     file_size = file_id.file_size
 
@@ -188,15 +183,22 @@ async def media_streamer(request: web.Request, id: int, secure_hash: str, chat_i
     file_name = file_id.file_name
     disposition = "attachment"
 
+    # ✅ Safe file name handling for streaming
+    if not file_name:
+        file_name = "file"
+    elif isinstance(file_name, bytes):
+        file_name = file_name.decode('utf-8', errors='ignore')
+    file_name = str(file_name)
+
     if mime_type:
-        if not file_name:
+        if not file_name or file_name == "file":
             try:
                 file_name = f"{secrets.token_hex(2)}.{mime_type.split('/')[1]}"
             except (IndexError, AttributeError):
                 file_name = f"{secrets.token_hex(2)}.unknown"
     else:
-        if file_name:
-            mime_type = mimetypes.guess_type(file_id.file_name)
+        if file_name and file_name != "file":
+            mime_type = mimetypes.guess_type(file_name)[0] or "application/octet-stream"
         else:
             mime_type = "application/octet-stream"
             file_name = f"{secrets.token_hex(2)}.unknown"
@@ -212,4 +214,4 @@ async def media_streamer(request: web.Request, id: int, secure_hash: str, chat_i
             "Accept-Ranges": "bytes",
             "Access-Control-Allow-Origin": "*",
         },
-    )
+                                                      )
