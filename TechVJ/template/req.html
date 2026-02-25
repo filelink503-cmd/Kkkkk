@@ -2,22 +2,193 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="https://babubhaikundan.pages.dev/Assets/logo/circle_large.png" type="image/x-icon">
-    <meta property="og:image" content="https://babubhaikundan.pages.dev/Assets/logo/circle_large.png" itemprop="thumbnailUrl">
+    <link rel="shortcut icon" href="https://babubhaikundan.pages.dev/Assets/logo/bbk.png" type="image/x-icon">
+    <meta property="og:image" content="https://babubhaikundan.pages.dev/Assets/logo/bbk.png" itemprop="thumbnailUrl">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>{{file_name}} | Babu Bhai Kundan</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.js"></script>    
+   
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type='text/css' href="https://drive----google.com/uc?export=view&id=1pVLG4gZy7jdow3sO-wFS06aP_A9QX0O6">
+    
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Delius">
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+
+ /* BBK Custom Loading Overlay */
+#bbk-loader {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    border-radius: 8px;
+    padding-top: 8px;
+    transition: opacity 0.5s ease;
+}
+
+#bbk-loader::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        circle at center,
+        rgba(255,255,255,0.05),
+        rgba(0,0,0,0.9)
+    );
+    z-index: -1;
+}
+
+#bbk-loader.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.bbk-logo-container {
+    position: relative;
+    margin-bottom: 18px;
+}
+
+.bbk-logo-ring {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: clamp(85px, 22vw, 105px);
+    height: clamp(85px, 22vw, 105px);
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top: 3px solid #e91e8c;
+    border-right: 3px solid #9c27b0;
+    animation: spin 1.2s linear infinite;
+}
+
+.bbk-logo-ring-2 {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: clamp(100px, 26vw, 120px);
+    height: clamp(100px, 26vw, 120px);
+    border-radius: 50%;
+    border: 2px solid transparent;
+    border-bottom: 2px solid #3f51b5;
+    border-left: 2px solid #2196f3;
+    animation: spin-reverse 1.8s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes spin-reverse {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(-360deg); }
+}
+
+.bbk-logo-img {
+    width: clamp(55px, 18vw, 72px);
+    height: clamp(55px, 18vw, 72px);
+    border-radius: 50%;
+    animation: pulse-logo 2s ease-in-out infinite;
+    box-shadow: 0 0 30px rgba(233, 30, 140, 0.4);
+}
+
+@keyframes pulse-logo {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(233, 30, 140, 0.4); }
+    50% { transform: scale(1.05); box-shadow: 0 0 50px rgba(233, 30, 140, 0.7); }
+}
+
+.bbk-loading-text {
+    color: #ffffff;
+    font-weight: 500;
+    opacity: 0.85;
+    font-size: clamp(0.85rem, 3.5vw, 1rem);
+    letter-spacing: 1.5px;
+    margin-bottom: 14px;
+    animation: text-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes text-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.bbk-progress-bar-container {
+    width: clamp(180px, 65vw, 240px);
+    height: 5px;
+    margin-bottom: 10px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(233, 30, 140, 0.3);  /* glow add karo */
+}
+
+.bbk-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #e91e8c, #9c27b0, #3f51b5);
+    border-radius: 10px;
+}
+
+@keyframes progress-move {
+    0% { width: 0%; margin-left: 0; }
+    50% { width: 70%; margin-left: 0; }
+    100% { width: 0%; margin-left: 100%; }
+}
+
+.bbk-sub-text {
+    color: rgba(255,255,255,0.4);
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    
+}
+
+/* Video wrapper */
+.video-wrapper {
+    position: relative;
+    background: #000;
+    border-radius: 8px;
+    margin: 0 auto;
+    overflow: hidden;
+    width: 100%;
+    min-height: 180px;
+}
+
+.video-wrapper video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* Plyr container full wrapper fill kare */
+.video-wrapper .plyr {
+    width: 100%;
+    height: 100%;
+}
+
+/* Settings menu fix — video ke upar overflow na kare */
+.plyr__menu__container {
+    max-height: 160px;
+    overflow-y: auto;
+}
+                     
+                     
+     </style>                
+                     
+
+
+
 
 </head>
 
@@ -38,7 +209,7 @@
                     </div>
                     <div class="d-flex ">
                         <!-- logo -->
-                        <img src="https://babubhaikundan.pages.dev/Assets/logo/circle_large.png" width="80" height="80" class="rounded" style="box-shadow: 3px 5px 11px black;" alt="">
+                        <img src="https://babubhaikundan.pages.dev/Assets/logo/hacker.png" width="80" height="80" class="rounded" style="box-shadow: 3px 5px 11px black;" alt="">
                         <div class="p-3">
                             <h4 class="offcanvas-title font-semibold wow animate__animated animate__fadeInLeft " id="offcanvasWithBothOptionsLabel" style="text-shadow: 3px 5px 11px black;" >𝕂𝕦𝕟𝕕𝕒𝕟 𝕐𝕒𝕕𝕒𝕧 😎</h4>
                             <p class="text-red-600 font-semibold wow animate__animated animate__fadeIn animate__delay-1s animate__infinite">The One & Only</p>
@@ -147,7 +318,35 @@
         <div class="justify-content-center align-items-center w-100 d-flex  flex-wrap">
             <div class="lg:w-9/12 lg:px-12 lg:py-4 w-full  border border-danger wow animate__animated animate__fadeInLeft">
                 <!-- THE VIDEO TAG IS NOW EMPTY -->
-                <video id="player" class="player " playsinline controls></video>
+               <div class="video-wrapper">
+    <!-- BBK Custom Loader -->
+    <div id="bbk-loader">
+        <div class="bbk-logo-container">
+            <div class="bbk-logo-ring"></div>
+            <div class="bbk-logo-ring-2"></div>
+            <img 
+                src="https://babubhaikundan.pages.dev/Assets/logo/bbk.png" 
+                class="bbk-logo-img"
+                alt="BBK"
+            >
+        </div>
+        
+        <div class="bbk-loading-text" id="bbk-loader-text">
+    LOADING...
+</div>
+        
+        <div class="bbk-progress-bar-container">
+    <div class="bbk-progress-bar" id="bbk-progress-bar"></div>
+</div>
+
+<div class="bbk-sub-text" id="bbk-progress-text">
+    0%
+</div>
+    </div>
+    
+    <!-- Actual Video -->
+    <video id="player" class="player" playsinline controls></video>
+</div>
             </div>
         </div>
 
@@ -172,7 +371,9 @@
                         Mx Player
                     </div>
                     <div onclick="playit_player()" class="card card-body col-lg-3  col-5 bg-dark text-secondary text-center justify-content-center align-items-center hover:shadow-md hover:shadow-gray-400 hover:translate-y-[-5px] transition transition-all duration-300 wow animate__animated animate__fadeInLeft">
-                        <svg class="wow animate__animated animate__shakeX  animate__delay-1s " xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 48 48" id="b"><defs><style>.c{fill:none;stroke:#22abbd;stroke-linecap:round;stroke-linejoin:round;}</style></defs><path class="c" d="m17,32.5v5c0,2.7614-2.2386,5-5,5h0c-2.7614,0-5-2.2386-5-5"/><path class="c" d="m7,37.5c0-2.7614,2.2386-5,5-5h25c2.2,0,4-1.8,4-4V9.5c0-2.2-1.8-4-4-4H11c-2.2,0-4,1.8-4,4v28"/><path class="c" d="m29.1876,18.467l-9.1448-5.2652c-.822-.4733-1.8482.12-1.8482,1.0685v10.5304c0,.9485,1.0262,1.5418,1.8482,1.0685l9.1448-5.2652c.8237-.4742.8237-1.6628,0-2.137Z"/></svg>
+                        <svg class="wow animate__animated animate__shakeX  animate__delay-1s " xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 48 48" id="b"><defs><style>.c{fill:none;stroke:#22abbd;stroke-linecap:round;stroke-linejoin:round;}
+                         </style>
+                        </defs><path class="c" d="m17,32.5v5c0,2.7614-2.2386,5-5,5h0c-2.7614,0-5-2.2386-5-5"/><path class="c" d="m7,37.5c0-2.7614,2.2386-5,5-5h25c2.2,0,4-1.8,4-4V9.5c0-2.2-1.8-4-4-4H11c-2.2,0-4,1.8-4,4v28"/><path class="c" d="m29.1876,18.467l-9.1448-5.2652c-.822-.4733-1.8482.12-1.8482,1.0685v10.5304c0,.9485,1.0262,1.5418,1.8482,1.0685l9.1448-5.2652c.8237-.4742.8237-1.6628,0-2.137Z"/></svg>
                         Play-it
                     </div>
                     <div onclick="km_player()" class="card card-body col-lg-3  col-5 bg-dark text-secondary text-center jcc align-items-center hover:shadow-md hover:shadow-gray-400 hover:translate-y-[-5px] transition transition-all duration-300 wow animate__animated animate__fadeInRight">
@@ -199,14 +400,14 @@
         </div>
         <div class="justify-content-center align-items-center w-100 d-flex mb-3">
             <div class="row d-flex w-100 justify-content-center align-items-center">
-                <div class="col-lg-8 col-10  py-2 text-center bg-danger rounded-4 text-sm wow animate__animated animate__FadeIn">
+                <div class="col-lg-8 col-10  py-2 text-center bg-danger rounded-4 text-sm wow animate__animated animate__fadeIn">
                         Video not playing ? possibly because your browser or the player doesn't support codec please download and watch.
                 </div>
             </div>
         </div>
         <div class="justify-content-center align-items-center w-100 d-flex mb-3">
             <div class="row d-flex w-100 justify-content-center align-items-center">
-                <div class="col-lg-5 col-10  py-2 text-center bg-success rounded-4 text-sm wow animate__animated animate__FadeIn">
+                <div class="col-lg-5 col-10  py-2 text-center bg-success rounded-4 text-sm wow animate__animated animate__fadeIn">
                     If you find any broken links then please contact <a href="https://telegram.me/kundan_yadav_bot" class="text-[16px] font-bold underline active:text-blue-600">Kundan Yadav</a>
                 </div>
             </div>
@@ -226,7 +427,7 @@
                     </a>
               
                     <!-- Telegram -->
-                    <a class="btn btn-outline-light btn-floating m-1 rounded-circle p-2 border-secondary wow animate__animated animate__fadeInDown animate__delay-1s hover:shadow-md hover:shadow-gray-400 hover:translate-y-[-5px] transition transition-all duration-200" href="https://telegram.me/kundan_yadav_bot" target="_blank" role="button">
+                    <a class="btn btn-outline-light btn-floating m-1 rounded-circle p-2 border-secondary wow animate__animated animate__fadeInDown animate__delay-1s hover:shadow-md hover:shadow-gray-400 hover:translate-y-[-5px] transition transition-all duration-200" href="https://telegram.me/babubhaikundan" target="_blank" role="button">
                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 50 50">
                         <path fill="url(#PMWUiMSnUf2R_PPJ6rqZea_44112_gr1)" d="M25,2c12.703,0,23,10.297,23,23S37.703,48,25,48S2,37.703,2,25S12.297,2,25,2z M32.934,34.375	c0.423-1.298,2.405-14.234,2.65-16.783c0.074-0.772-0.17-1.285-0.648-1.514c-0.578-0.278-1.434-0.139-2.427,0.219	c-1.362,0.491-18.774,7.884-19.78,8.312c-0.954,0.405-1.856,0.847-1.856,1.487c0,0.45,0.267,0.703,1.003,0.966	c0.766,0.273,2.695,0.858,3.834,1.172c1.097,0.303,2.346,0.04,3.046-0.395c0.742-0.461,9.305-6.191,9.92-6.693	c0.614-0.502,1.104,0.141,0.602,0.644c-0.502,0.502-6.38,6.207-7.155,6.997c-0.941,0.959-0.273,1.953,0.358,2.351	c0.721,0.454,5.906,3.932,6.687,4.49c0.781,0.558,1.573,0.811,2.298,0.811C32.191,36.439,32.573,35.484,32.934,34.375z"></path>
                     </svg>
@@ -262,7 +463,7 @@
                     <div class="col-lg-2 col-4 justify-content-center align-items-center text-center mt-lg-0 mt-5  pt-lg-0 pt-4 wow animate__animated animate__fadeInUp">
                         <ul class="navbar-nav ">
                             <li class="nav-item justify-center items-center flex"  style="margin-top: -40px;">
-                                <img src="https://babubhaikundan.pages.dev/Assets/logo/circle_large.png" height="140px" class="rounded-3 " alt="logo">
+                                <img src="https://babubhaikundan.pages.dev/Assets/logo/bbk.png" height="140px" class="rounded-3 " alt="logo">
                         </li>
                     </ul>
                 </div>
@@ -282,12 +483,14 @@
                 All right reserved
             </div>   
         </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js"></script>
 
     <!-- PLYR.JS SCRIPT -->
     <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
 
     <!-- WOW.JS and other original scripts -->
-    <script src="js/wow.min.js"></script>
+    
     <script>
         new WOW().init();
     </script>
@@ -300,89 +503,291 @@
     </script>
     
     <!-- MODIFIED SCRIPT FOR PLAYER AND QUALITY CHANGER -->
-    <!-- MODIFIED SCRIPT FOR PLAYER AND QUALITY CHANGER -->
-	<script>
-        // Server se aane wale URL ko yahin par le lein
-        const fileUrl = "{{file_url}}";
+    
+    
+  <script>
+const fileUrl = "{{file_url}}";
+const isHLS = fileUrl.includes(".m3u8");
+const resumeKey = "bbk_resume_" + btoa(fileUrl.slice(-30));
 
-        // Bot ko batayein ki iske aage ka code use nahi padhna hai
-        {% raw %}
-        document.addEventListener('DOMContentLoaded', () => {
-            const player = new Plyr('#player', {
-                controls: [
-                    'play-large', 'play', 'progress', 'current-time',
-                    'duration', 'mute', 'settings', 'pip', 'fullscreen'
-                ],
-                quality: {
-                    default: 1080,
-                    options: [1080, 720, 480],
-                    forced: true,
-                },
-                dblclickFullscreen: false,
-            });
+{% raw %}
+document.addEventListener('DOMContentLoaded', () => {
 
-            window.player = player;
+    const videoEl  = document.getElementById('player');
+    const wrapper  = document.querySelector('.video-wrapper');
+    const loader   = document.getElementById('bbk-loader');
+    const loaderTxt= document.getElementById('bbk-loader-text');
+    const progBar  = document.getElementById('bbk-progress-bar');
+    const progTxt  = document.getElementById('bbk-progress-text');
 
-            player.on('ready', (event) => {
-                const instance = event.detail.plyr;
-                const container = instance.elements.container;
-                let lastTap = 0;
-                let isSeeking = false; // Yeh humara lock hai
+    let loaderDone = false;
+    let resumeDone = false;
+    let fakeTimer  = null;
+    let hlsInstance= null;
 
-                container.addEventListener('touchend', event => {
-                    const currentTime = new Date().getTime();
-                    const tapLength = currentTime - lastTap;
-                    
-                    // Check karein ki yeh double-tap hai aur lock laga hua nahi hai
-                    if (tapLength < 300 && tapLength > 0 && !isSeeking) {
-                        isSeeking = true; // Turant lock laga do
-                        event.preventDefault();
+    const savedTime = parseFloat(localStorage.getItem(resumeKey)) || 0;
 
-                        const containerRect = container.getBoundingClientRect();
-                        const touchX = event.changedTouches[0].clientX;
-                        const midpoint = containerRect.left + (containerRect.width / 2);
+    // ── Loader hide ──────────────────────────
+    function hideLoader() {
+        if (loaderDone) return;
+        loaderDone = true;
+        if (fakeTimer) clearInterval(fakeTimer);
+        if (progBar)  progBar.style.width = "100%";
+        if (progTxt)  progTxt.innerText   = "100%";
+        if (loader) {
+            loader.classList.add('hidden');
+            setTimeout(() => { try { loader.remove(); } catch(e){} }, 500);
+        }
+    }
 
-                        if (touchX < midpoint) {
-                            instance.rewind(7);
-                        } else {
-                            instance.forward(7);
-                        }
-                        
-                        // Thodi der baad lock hata do
-                        setTimeout(() => { isSeeking = false; }, 300);
-                    }
-                    lastTap = currentTime;
-                });
+    function fmt(s) {
+        s = Math.floor(s);
+        const m = Math.floor(s / 60), sec = s % 60;
+        return `${m}:${sec < 10 ? '0' : ''}${sec}`;
+    }
 
-                // Fullscreen par landscape wala feature
-                instance.on('enterfullscreen', () => {
-                    try {
-                        if (screen.orientation && typeof screen.orientation.lock === 'function') {
-                            screen.orientation.lock('landscape');
-                        }
-                    } catch (e) { /* ignore */ }
-                });
+    if (savedTime > 10 && loaderTxt)
+        loaderTxt.innerText = `Resuming at ${fmt(savedTime)}`;
 
-                instance.on('exitfullscreen', () => {
-                    try {
-                        if (screen.orientation && typeof screen.orientation.unlock === 'function') {
-                            screen.orientation.unlock();
-                        }
-                    } catch (e) { /* ignore */ }
-                });
-            });
+    const slowTimer = setTimeout(() => {
+        if (!loaderDone && loaderTxt)
+            loaderTxt.innerText = "Slow network…";
+    }, 3500);
 
-            player.source = {
-                type: 'video',
-                sources: [
-                    { src: fileUrl, type: 'video/mp4', size: 1080 },
-                    { src: fileUrl, type: 'video/mp4', size: 720 },
-                    { src: fileUrl, type: 'video/mp4', size: 480 },
-                ]
-            };
+    // ── Fake progress (HLS only) ─────────────
+    if (isHLS) {
+        let fp = 0;
+        fakeTimer = setInterval(() => {
+            if (fp >= 85) return;
+            fp += Math.random() * 5;
+            if (progBar)  progBar.style.width = fp + "%";
+            if (progTxt)  progTxt.innerText   = Math.floor(fp) + "%";
+        }, 350);
+    }
+
+    // ── Portrait/Landscape wrapper fix ───────
+    function adjustWrapper() {
+    if (!wrapper || !videoEl.videoWidth) return;
+    const vw = videoEl.videoWidth;
+    const vh = videoEl.videoHeight;
+    if (!vw || !vh) return;
+
+    const isPortrait = vh > vw;
+    const screenW = window.innerWidth;
+    const screenH = window.innerHeight;
+
+    if (isPortrait) {
+        // Portrait: height 60vh, width ratio se calculate
+        const maxH = screenH * 0.60;
+        const calcW = Math.min(maxH * (vw / vh), screenW * 0.92);
+        wrapper.style.height  = maxH + 'px';
+        wrapper.style.width   = calcW + 'px';
+        wrapper.style.aspectRatio = 'unset';
+        wrapper.style.maxHeight   = 'unset';
+    } else {
+        // Landscape: width 100%, height aspect ratio se
+        const naturalH = screenW * (vh / vw);
+        const finalH   = Math.min(naturalH, screenH * 0.75);
+        wrapper.style.width       = '100%';
+        wrapper.style.height      = finalH + 'px';
+        wrapper.style.aspectRatio = 'unset';
+        wrapper.style.maxHeight   = 'unset';
+    }
+}
+
+    // ── Common player events attach ───────────
+    function attachPlayerEvents(p) {
+        p.on('timeupdate', () => {
+            if (!resumeDone && savedTime > 10) {
+                resumeDone = true;
+                if (Math.abs(p.currentTime - savedTime) > 2)
+                    p.currentTime = savedTime;
+            }
+            if (p.currentTime > 5)
+                localStorage.setItem(resumeKey, p.currentTime);
         });
-        {% endraw %}
-	</script>
+
+        p.on('ended', () => localStorage.removeItem(resumeKey));
+
+        const container = p.elements.container;
+        let lastTap = 0, isSeeking = false;
+        container.addEventListener('touchend', e => {
+            const now = Date.now();
+            if (now - lastTap < 300 && !isSeeking) {
+                isSeeking = true;
+                e.preventDefault();
+                const rect = container.getBoundingClientRect();
+                if (e.changedTouches[0].clientX < rect.left + rect.width / 2)
+                    p.rewind(7);
+                else
+                    p.forward(7);
+                setTimeout(() => isSeeking = false, 300);
+            }
+            lastTap = now;
+        });
+
+        p.on('enterfullscreen', () => {
+            try {
+                const v = p.media;
+                if (v.videoWidth > v.videoHeight)
+                    screen.orientation?.lock('landscape');
+            } catch(e) {}
+        });
+        p.on('exitfullscreen', () => {
+            try { screen.orientation?.unlock(); } catch(e) {}
+        });
+    }
+
+    // ── Video element events ──────────────────
+    videoEl.addEventListener('loadedmetadata', () => {
+        adjustWrapper();
+        if (!resumeDone && savedTime > 10) {
+            resumeDone = true;
+            videoEl.currentTime = savedTime;
+        }
+    });
+
+    videoEl.addEventListener('progress', () => {
+        try {
+            if (!videoEl.duration || videoEl.duration === Infinity) return;
+            const buf = videoEl.buffered;
+            if (!buf.length) return;
+            const pct = Math.min(
+                Math.floor((buf.end(buf.length - 1) / videoEl.duration) * 100), 100
+            );
+            if (progBar)  progBar.style.width = pct + "%";
+            if (progTxt)  progTxt.innerText   = pct + "%";
+        } catch(e) {}
+    });
+
+    videoEl.addEventListener('canplay',  () => { clearTimeout(slowTimer); hideLoader(); });
+    videoEl.addEventListener('playing',  () => { clearTimeout(slowTimer); hideLoader(); });
+
+    const pollTimer = setInterval(() => {
+        if (videoEl.readyState >= 3) {
+            clearInterval(pollTimer);
+            clearTimeout(slowTimer);
+            hideLoader();
+        }
+    }, 200);
+
+    setTimeout(() => { clearTimeout(slowTimer); hideLoader(); }, 5000);
+
+    // ══════════════════════════════════════════
+    //  HLS path
+    // ══════════════════════════════════════════
+    if (isHLS && typeof Hls !== 'undefined' && Hls.isSupported()) {
+
+        hlsInstance = new Hls({ maxBufferLength: 30, maxMaxBufferLength: 60 });
+        hlsInstance.loadSource(fileUrl);
+        hlsInstance.attachMedia(videoEl);
+
+        hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => {
+
+            const levels = hlsInstance.levels;
+            const hasMulti = levels.length > 1;
+
+            const heights = hasMulti
+                ? [...new Set(levels.map(l => l.height))].sort((a, b) => b - a)
+                : [];
+            const qualityOptions = hasMulti ? [0, ...heights] : [0];
+
+            // Initial Plyr destroy & reinit with quality
+            const initPlayer = new Plyr('#player', {
+    controls: [
+        'play-large', 'play', 'progress',
+        'current-time', 'duration', 'mute',
+        'settings',        // ← hamesha dikhao
+        'pip', 'fullscreen'
+    ],
+    settings: hasMulti ? ['quality', 'speed'] : ['speed'],   // ← speed add
+    speed: { selected: 1, options: [0.5, 1, 1.25, 1.5, 2, 3] },
+    i18n: { qualityLabel: { 0: 'Auto' } },
+    quality: {
+        default: 0,
+        options: qualityOptions,
+        forced: true,
+        onChange: (newQ) => {
+            if (newQ === 0) {
+                hlsInstance.currentLevel = -1;
+            } else {
+                hlsInstance.levels.forEach((lvl, i) => {
+                    if (lvl.height === newQ)
+                        hlsInstance.currentLevel = i;
+                });
+            }
+        }
+    }
+});
+
+            window.player = initPlayer;
+
+            initPlayer.on('ready', () => {
+                attachPlayerEvents(initPlayer);
+            });
+
+            clearTimeout(slowTimer);
+            hideLoader();
+        });
+
+        // HLS error handler
+        hlsInstance.on(Hls.Events.ERROR, (event, data) => {
+            if (data.fatal) {
+                console.error('HLS fatal error:', data);
+                hideLoader();
+            }
+        });
+
+    } else if (isHLS && videoEl.canPlayType('application/vnd.apple.mpegurl')) {
+
+        // ── Safari native HLS ─────────────────
+        const safariPlayer = new Plyr('#player', {
+    controls: [
+        'play-large','play','progress',
+        'current-time','duration','mute',
+        'settings',        // ← add
+        'pip','fullscreen'
+    ],
+    settings: ['speed'],   // ← add
+    speed: { selected: 1, options: [0.5, 1, 1.25, 1.5, 2, 3] },
+    dblclickFullscreen: false
+});
+        window.player = safariPlayer;
+        safariPlayer.source = {
+            type: 'video',
+            sources: [{ src: fileUrl, type: 'application/x-mpegURL' }]
+        };
+        safariPlayer.on('ready', () => attachPlayerEvents(safariPlayer));
+
+    } else {
+
+        // ══════════════════════════════════════
+        //  MP4 / normal video path
+        // ══════════════════════════════════════
+        const mp4Player = new Plyr('#player', {
+    controls: [
+        'play-large','play','progress',
+        'current-time','duration','mute',
+        'settings',        // ← add
+        'pip','fullscreen'
+    ],
+    settings: ['speed'],   // ← add
+    speed: { selected: 1, options: [0.5, 1, 1.25, 1.5, 2, 3] },
+    dblclickFullscreen: false
+});
+        window.player = mp4Player;
+        mp4Player.source = {
+            type: 'video',
+            sources: [{ src: fileUrl, type: 'video/mp4' }]
+        };
+        mp4Player.on('ready', () => attachPlayerEvents(mp4Player));
+    }
+
+});
+{% endraw %}
+</script>
+    
+    
     
     <!-- Original scripts for disabling right click and external players -->
     <script>
@@ -394,7 +799,6 @@
                 e.key === 'F12' ||
                 (e.ctrlKey && e.shiftKey && e.key === 'I') ||
                 (e.ctrlKey && e.key === 'u') ||
-                (e.ctrlKey && e.key === 'Shift') || // Disabling more combos
                 (e.ctrlKey && e.shiftKey && e.key === 'C')
             ) {
                 e.preventDefault();
