@@ -2,12 +2,12 @@ import re, math, logging, secrets, mimetypes, time
 from info import *
 from aiohttp import web
 from aiohttp.http_exceptions import BadStatusLine
-from TechVJ.bot import multi_clients, work_loads, TechVJBot
-from TechVJ.server.exceptions import FIleNotFound, InvalidHash
-from TechVJ import StartTime, __version__
-from TechVJ.util.custom_dl import ByteStreamer
-from TechVJ.util.time_format import get_readable_time
-from TechVJ.util.render_template import render_page
+from BabuBhaiKundan.bot import multi_clients, work_loads, BabuBhaiKundanBot
+from BabuBhaiKundan.server.exceptions import FIleNotFound, InvalidHash
+from BabuBhaiKundan import StartTime, __version__
+from BabuBhaiKundan.util.custom_dl import ByteStreamer
+from BabuBhaiKundan.util.time_format import get_readable_time
+from BabuBhaiKundan.util.render_template import render_page
 
 routes = web.RouteTableDef()
 
@@ -15,7 +15,7 @@ routes = web.RouteTableDef()
 async def root_route_handler(request):
     """Render welcome page on root URL"""
     try:
-        with open("TechVJ/template/welcome.html", "r", encoding="utf-8") as f:
+        with open("BabuBhaiKundan/template/welcome.html", "r", encoding="utf-8") as f:
             html_content = f.read()
         return web.Response(text=html_content, content_type='text/html')
     except FileNotFoundError:
@@ -88,7 +88,7 @@ async def external_stream_handler(request: web.Request):
         import jinja2, urllib.parse
         file_url = urllib.parse.unquote(file_url)
         
-        with open("TechVJ/template/req.html") as f:
+        with open("BabuBhaiKundan/template/req.html") as f:
             template = jinja2.Template(f.read())
         
         return web.Response(
@@ -116,7 +116,7 @@ async def iframe_handler(request: web.Request):
         import jinja2, urllib.parse
         url = urllib.parse.unquote(url)
         
-        with open("TechVJ/template/iframe.html") as f:
+        with open("BabuBhaiKundan/template/iframe.html") as f:
             template = jinja2.Template(f.read())
         
         return web.Response(

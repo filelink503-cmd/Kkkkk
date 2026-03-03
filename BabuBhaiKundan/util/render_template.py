@@ -1,10 +1,10 @@
-# TechVJ/util/render_template.py
+# BabuBhaiKundan/util/render_template.py
 
 import jinja2
 from info import *
-from TechVJ.bot import TechVJBot
-from TechVJ.util.human_readable import humanbytes
-from TechVJ.util.file_properties import get_file_ids
+from BabuBhaiKundan.bot import BabuBhaiKundanBot
+from BabuBhaiKundan.util.human_readable import humanbytes
+from BabuBhaiKundan.util.file_properties import get_file_ids
 import urllib.parse
 import logging
 import aiohttp
@@ -15,8 +15,8 @@ async def render_page(id, secure_hash, src=None, chat_id=None):
     else:
         chat_id = int(chat_id)
 
-    file = await TechVJBot.get_messages(chat_id, int(id))
-    file_data = await get_file_ids(TechVJBot, chat_id, int(id))
+    file = await BabuBhaiKundanBot.get_messages(chat_id, int(id))
+    file_data = await get_file_ids(BabuBhaiKundanBot, chat_id, int(id))
 
     if file_data.unique_id[:6] != secure_hash:
         logging.debug(f"Invalid hash for message with - ID {id}")
@@ -46,9 +46,9 @@ async def render_page(id, secure_hash, src=None, chat_id=None):
     file_size = humanbytes(file_data.file_size)
     
     if tag in ["video", "audio"]:
-        template_file = "TechVJ/template/req.html"
+        template_file = "BabuBhaiKundan/template/req.html"
     else:
-        template_file = "TechVJ/template/dl.html"
+        template_file = "BabuBhaiKundan/template/dl.html"
 
     with open(template_file) as f:
         template = jinja2.Template(f.read())

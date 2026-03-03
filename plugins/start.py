@@ -12,8 +12,8 @@ from urllib.parse import quote_plus
 
 # Apni nayi setting import karein
 from info import URL, LOG_CHANNEL, SHORTLINK, FORCE_SUB_CHANNEL, REDIRECT_PAGE_URL 
-from TechVJ.util.file_properties import get_name, get_hash, get_media_file_size
-from TechVJ.util.human_readable import humanbytes
+from BabuBhaiKundan.util.file_properties import get_name, get_hash, get_media_file_size
+from BabuBhaiKundan.util.human_readable import humanbytes
 from database.users_chats_db import db
 from utils import temp, get_shortlink
 
