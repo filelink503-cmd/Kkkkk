@@ -26,7 +26,7 @@ async def root_route_handler(request):
         })
 
 @routes.get(r"/watch/{path:\S+}", allow_head=True)
-async def stream_handler(request: web.Request):
+async def watch_handler(request: web.Request):
     try:
         path = request.match_info["path"]
         secure_hash = request.rel_url.query.get("hash")
