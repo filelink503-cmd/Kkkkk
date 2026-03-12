@@ -34,8 +34,9 @@ class BabuBhaiKundanXBot(Client):
             api_hash=API_HASH,
             bot_token=BOT_TOKEN,
             workers=50,
-            plugins={"root": "plugins"},
+            plugins=None,  # 😡 Yahan None kar diya! Ab ye start.py wagairah load nahi karega
             sleep_threshold=5,
+            no_updates=True  # 🔥 Asli Jadoo: Ye True hai matlab Bot behra ho gaya, 409 Conflict life me nahi aayega!
         )
 
     async def set_self(self):

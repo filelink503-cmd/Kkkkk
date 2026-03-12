@@ -18,8 +18,14 @@ async def render_page(id, secure_hash, src=None, chat_id=None):
     file = await BabuBhaiKundanBot.get_messages(chat_id, int(id))
     file_data = await get_file_ids(BabuBhaiKundanBot, chat_id, int(id))
 
+    # ---------------------------------------------------------------
+    # 🔥 HASH CHECK WAPAS LAGA DIYA HAI BABU BHAI!
+    # ---------------------------------------------------------------
     if file_data.unique_id[:6] != secure_hash:
+        logging.debug(f"link hash: {secure_hash} - {file_data.unique_id[:6]}")
         logging.debug(f"Invalid hash for message with - ID {id}")
+        raise InvalidHash  # <-- 😡 YAHAN SE '#' HATA DO! (Comment hata do)
+    # ---------------------------------------------------------------
 
     # ==========================================
     # 🔥 NUCLEAR FIX FOR RENDER ERROR
